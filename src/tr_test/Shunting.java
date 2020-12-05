@@ -1,7 +1,6 @@
 package tr_test;
 
-import java.util.LinkedList;
-import java.util.Queue;
+
 import java.util.Stack;
 
 public class Shunting {
@@ -10,7 +9,21 @@ public class Shunting {
 	//Queue<String>outqueue = new LinkedList<String>();	//outputqueue
 	Stack<String>opstack = new Stack<>();			//operatorstack
 	public void UserInput(String input) {
-		this.input = input;
+		String built_input = "";
+		//this.input = input;
+		for(int i=0;i<input.length();i++) {
+			String input_0 = Character.toString(input.charAt(i));
+			if(Character.isDigit(input.charAt(i))) {
+				built_input += input_0;
+			}
+			else {
+				if(Character.isDigit(built_input.charAt(built_input.length()-1))) built_input+="$";
+				built_input += input_0;
+			}
+		}
+		if(Character.isDigit(built_input.charAt(built_input.length()-1))) built_input+="$";
+		System.out.println(built_input);
+		this.input = built_input;
 	}
 	public int Precedence(String precedence) {
 		switch(precedence) {
@@ -28,11 +41,14 @@ public class Shunting {
 	public String Conversion() {
 		while(input.length()>0) {
 			String input_0 = Character.toString(input.charAt(0));
+			System.out.println("input0: " + input_0);
 			if(Character.isDigit(input.charAt(0))) {
 				//outqueue.add(Character.toString(input.charAt(0)));
 				output += input_0;
-				System.out.println(output);
+				//System.out.println(output);
 			}
+			//input=="$" doesnt work
+			else if(input_0.contains("$")) output+= "$";
 			else {
 				int precedence = Precedence(input_0);
 				if(opstack.isEmpty()) opstack.push(input_0);
@@ -42,12 +58,17 @@ public class Shunting {
 				else if(precedence == 0) opstack.push(input_0);
 				else if(precedence == 1) {
 					while(opstack.peek()!="(") {
+						/*if(opstack.peek()=="(") { 
+							opstack.pop();
+							break;
+						}*/
 						output += opstack.pop();	//Pop everything till (
+						if(opstack.isEmpty()) break;
 					}
 					//Discard paranthesis, because not needed
 				}
 				else{
-					System.out.println(opstack.peek());
+					//System.out.println(opstack.peek());
 					while(precedence<=Precedence(opstack.peek())) {	//while inputpred is <= stackpred pop stack
 						output+=opstack.pop();
 						if(opstack.isEmpty()) break;
@@ -57,11 +78,12 @@ public class Shunting {
 				}
 			}
 			input = input.substring(1);
-			System.out.println("Hello");
+			//System.out.println(output);
 		}
 		while(!opstack.isEmpty()) {
 			output+=opstack.pop();
 		}
+		output = output.replace("(", "" );
 		
 		return output;
 	}
