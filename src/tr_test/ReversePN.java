@@ -6,6 +6,10 @@ public class ReversePN {
 	Stack<Double>stack = new Stack<>();
 	double output;
 	int count = 0;
+	/*
+	 * Calculation of input string with reverse polish noation: scans string for number then pushes num to stack
+	 * If operations follows first two stackpositions will be calculated and returned to stack
+	 */
 	public double calculate(String input) {
 		while(input.length()>0) {
 			String input_0 = Character.toString(input.charAt(0));

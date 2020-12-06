@@ -8,6 +8,10 @@ public class Shunting {
 	String output = "";
 	//Queue<String>outqueue = new LinkedList<String>();	//outputqueue
 	Stack<String>opstack = new Stack<>();			//operatorstack
+	/*
+	UserInput adds $ to every number so that calculation for digits >9 is possible
+	If a number is followed by an operation it is recognized as a number with $
+	*/
 	public void UserInput(String input) {
 		String built_input = "";
 		//this.input = input;
